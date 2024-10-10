@@ -22,12 +22,14 @@ interface HomeI {
 }
 
 const Home = async ({ searchParams }: HomeI) => {
+  const page = Number(searchParams.page) || 1;
+
   const startTime = Date.now();
 
-  const phonesData = await getPhoneNumbers(Number(searchParams.page));
+  const phonesData = await getPhoneNumbers(Number(page));
 
   const endTime = Date.now();
-  const duration = endTime - startTime; // Duration in milliseconds
+  const duration = endTime - startTime;
 
   return (
     <main className="flex items-center justify-center flex-col px-5 pt-10">
@@ -64,22 +66,18 @@ const Home = async ({ searchParams }: HomeI) => {
       <Pagination className="my-10">
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious
-              href={`/?page=${Number(searchParams.page) - 1}`}
-            />
+            <PaginationPrevious href={`/?page=${Number(page) - 1}`} />
           </PaginationItem>
 
           <PaginationItem>
-            <PaginationLink className="w-fit">{`${
-              searchParams.page
-            } of ${Math.ceil(
+            <PaginationLink className="w-fit">{`${page} of ${Math.ceil(
               // hardcoded cuz its test task
               1200 / 100
             )}`}</PaginationLink>
           </PaginationItem>
 
           <PaginationItem>
-            <PaginationNext href={`/?page=${Number(searchParams.page) + 1}`} />
+            <PaginationNext href={`/?page=${Number(page) + 1}`} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
